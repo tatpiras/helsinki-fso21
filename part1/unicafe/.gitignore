@@ -1,10 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-/public/*
 README.md
 
 # dependencies
-/node_modules/*
+**/node_modules
 /.pnp
 .pnp.js
 
@@ -13,6 +12,7 @@ README.md
 
 # production
 /build
+/public
 
 # misc
 .DS_Store
