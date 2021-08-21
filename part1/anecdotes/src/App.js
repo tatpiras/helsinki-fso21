@@ -11,17 +11,29 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
-   
-  const [selected, setSelected] = useState(0)
 
-  console.log('current index: ', selected)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+
+  /*
+  const [votes, setVotes] = useState({
+    '0': 0,
+    '1': 0,
+    '2': 0,
+    '3': 0,
+    '4': 0,
+    '5': 0,
+    '6': 0
+  })
+  */
+
+  const [selectedAnecdote, setSelected] = useState(0)
 
   const generateRandomIndex = (n) => {
 
     let newRandomIndex;
 
     do { newRandomIndex = Math.floor(Math.random() * n); } 
-    while(newRandomIndex === selected)
+    while(newRandomIndex === selectedAnecdote)
    
     return newRandomIndex;
 
@@ -31,21 +43,54 @@ const App = () => {
 
     const anecdotesLength = [...anecdotes].length;
     let nextIndex = generateRandomIndex(anecdotesLength)
-    console.log('next randomized index:', nextIndex)
     setSelected(nextIndex);
   }
 
+  const vote = () => {
+
+    const votesArrayCopy = [...votes]
+    votesArrayCopy[selectedAnecdote] += 1
+    setVotes(votesArrayCopy);
+
+  }
+
+  const highestVote = Math.max(...votes)
+  const highestVoteIndex = votes.indexOf(highestVote)
+  const mostVotedAnecdote = anecdotes[highestVoteIndex]
+
   return (
     <div>
-      <p>" {anecdotes[selected]} "</p>
-      <Button generateNext={generateNextAnecdote} text="next anecdote" />
+      <Header headerText='Anecdote of the day'/>
+      <Anecdote anecdote={anecdotes[selectedAnecdote]} votes={votes[selectedAnecdote]}/>
+      <Button onclick={vote} text='vote'/>
+      <Button onclick={generateNextAnecdote} text="next anecdote" />
+      <Header headerText='Anecdote with most votes'/>
+      <Anecdote anecdote={mostVotedAnecdote} votes={highestVote}/>
     </div>
   )
 }
 
-const Button = ({generateNext, text}) => {
+// COMPONENTS ------------------------------------------------------------------------------------------
+
+const Anecdote = ({anecdote, votes}) => {
   return (
-    <button onClick={generateNext}>{text}</button>
+    <div>
+      <p>" {anecdote} "</p>
+      <p>has {votes} votes</p>
+    </div>
+  );
+}
+
+const Button = ({onclick, text}) => {
+
+  return (
+    <button onClick={onclick}>{text}</button>
+  );
+}
+
+const Header = ({headerText}) => {
+  return (
+      <h1>{headerText}</h1>
   );
 }
 
