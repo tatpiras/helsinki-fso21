@@ -10,16 +10,14 @@ const Content = ({courseParts}) => {
     return sum + n
   }, 0)
 
-  console.log('total: ', total);
-
-    return (
-      <div>
-        {courseParts.map(part => 
-          <Part key={part.id} part={part} />
-        )}
-      <Total total={total} />
-      </div>
-    )
+  return (
+    <div>
+      {courseParts.map(part => 
+        <Part key={part.id} part={part} />
+      )}
+    <Total total={total} />
+    </div>
+  )
 }
 
 export default Content

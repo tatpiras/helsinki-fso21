@@ -4,12 +4,12 @@ import Content from './Content'
 
 const Course = ({course}) => {
 
-    return (
-        <div>
-          <Header headerName={course.name} />
-          <Content courseParts={course.parts} />
-        </div>
-    );
+  return (
+      <div>
+        <Header headerName={course.name} />
+        <Content courseParts={course.parts} />
+      </div>
+  );
 }
 
 export default Course

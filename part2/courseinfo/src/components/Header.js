@@ -1,9 +1,14 @@
 import React from 'react';
 
 const Header = ({headerName}) => {
-    return (
-      <h1>{headerName}</h1>
-    )
+
+  const headerStyle = {
+    fontWeight: 'bold'
+  }
+
+  return (
+    <h2 style={headerStyle}>{headerName}</h2>
+  )
 }
 
 export default Header
