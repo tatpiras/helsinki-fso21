@@ -23,19 +23,36 @@ const App = () => {
     setNewName(event.target.value)
   }
 
-  const addName = (event) => {
-    event.preventDefault()
+  const nameIsEqual = (objName1, objName2) => {
 
-    const newEntry = {
-      id: people.length + 1,
-      name: newName,
-    }
-
-    setPeople(people.concat(newEntry));
-    setNewName('Add a new name')
+    return objName1.toLowerCase() === objName2.toLowerCase()
   }
 
-  console.log('people after ', people);
+  const alreadyExists = (newName) => {
+    for (let person of people) {
+      if (nameIsEqual(person.name, newName)) {
+        return true;
+      }   
+    }
+  }
+
+  const addName = (event) => {
+
+    event.preventDefault()
+
+    if (alreadyExists(newName)) { alert(`${newName.toUpperCase()} is already added to phonebook`) }
+    else {
+      const newEntry = {
+        id: people.length + 1,
+        name: newName,
+      }
+     
+      setPeople(people.concat(newEntry));
+      setNewName('Add a new name')
+    }
+  }
+
+  console.log(people)
 
   return (
     <>
