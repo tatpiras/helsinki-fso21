@@ -1,10 +1,11 @@
 import React from 'react'
-import Name from './Name'
+import Entry from './Entry'
 
-const Entries = ({people}) => {
+const Entries = ({entriesToShow}) => {
 
+    /*
     const allPeople = people.map(person => 
-        <Name key={person.id} name={person.name}/>
+        <Entry key={person.id} name={person.name} number={person.number}/>
     );
 
     return (
@@ -13,6 +14,17 @@ const Entries = ({people}) => {
                 {allPeople}
             </ul>
         </div>
+    )
+    */
+   
+    return (
+        <div>
+        <ul style={{listStyleType: 'none', padding: '0'}}>
+            {entriesToShow.map(person => 
+                <Entry key={person.id} name={person.name} number={person.number}/>
+            )}
+        </ul>
+    </div>
     )
 }
 
