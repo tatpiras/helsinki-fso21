@@ -10,11 +10,6 @@
 
 # production
 /build
-/public
-
-README.md
-
-package-lock.json
 
 # misc
 .DS_Store

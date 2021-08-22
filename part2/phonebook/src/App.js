@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Header from './components/Header'
 import Form from './components/Form'
 import Entries from './components/Entries'
@@ -15,14 +16,14 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ showAll, setShowAll ] = useState(true)
-  const [ people, setPeople ] = useState(
-    [
-      { id: 1, name: 'Arto Hellas', number: '040-123456' },
-      { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
-      { id: 3, name: 'Dan Abramov', number: '12-43-234345' },
-      { id: 4, name: 'Mary Poppendieck', number: '39-23-6423122' }
-    ]
-  ) 
+  const [ people, setPeople ] = useState([]) 
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/people').then(response => {
+        setPeople(response.data)
+      })
+  }, [])
 
   // EVENT HANDLERS ------------------------------------------------------------------------
 
