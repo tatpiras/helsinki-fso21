@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Input = ({inputName, inputValue, inputOnchange}) => {
+const Input = ({ inputName, inputValue, inputOnchange }) => {
 
     return (
         <div>

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Searchbar from './components/Searchbar'
-import CountryCard from './components/CountryCard';
+import CountryContainer from './components/CountryContainer';
 
 const App = () => {
 
   const searchbarText = 'find countries'
-
-  const [ countries, setCountries] = useState([])
+  const [ countries, setCountries] = useState({})
   const [ newSearch, setNewSearch ] = useState('')
+  const [ selectedCountry, setSelectedCountry ] = useState({country: 'none'})
 
   useEffect(() => {
     axios
@@ -27,32 +27,18 @@ const App = () => {
   const handleSearchChange = (event) => {
     //console.log(event.target.value)
     if (event.target.value !== '') { setNewSearch(event.target.value) }
-
+    resetSelectedCountry()
   }
 
- const CountriesContainer = ({countries}) => {
+  const handleSelectedCountry = (event) => {
 
-    if (countries.length > 10) {
-      return (
-        <p>Too many matches, specify another filter</p>
-      )
-    } else if (countries.length === 1) {
+    let dataName = event.target.parentElement.getAttribute("dataname")
+    let country = countries.find(country => country.name === dataName);
+    setSelectedCountry({country: country})
+  }
 
-        const country = countries[0]
-
-        return (
-          <CountryCard name={country.name} capital={country.capital} population={country.population} 
-                       languages={country.languages} flag={country.flag} />
-        )
-      } else {
-        return (
-          <ul style={{padding: '0', listStyleType: 'none'}}>
-            {
-              countries.map((country, index) => <li key={index}>{country.name}</li>)
-            }
-          </ul>
-        )
-      }
+  const resetSelectedCountry = () => {
+    setSelectedCountry({country: 'none'})
   }
 
   // RENDERING -----------------------------------------------------------------------------
@@ -60,7 +46,7 @@ const App = () => {
   return (
     <>
       <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange} />
-      <CountriesContainer countries={countriesToShow}/>
+      <CountryContainer countries={countriesToShow} selectedCountry={selectedCountry} handleSelectedCountry={handleSelectedCountry} />
     </>
   );
   

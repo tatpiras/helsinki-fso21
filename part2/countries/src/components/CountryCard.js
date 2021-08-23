@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CountryCard = ({name, capital, population, languages, flag}) => {
+const CountryCard = ({ name, capital, population, languages, flag }) => {
 
     const imgStyle = {
         height: '100px',
