@@ -15,8 +15,11 @@ const CountryContainer = ({ countries, selectedCountry, handleSelectedCountry })
       const country = countries[0]
 
       return (
-        <CountryCard name={country.name} capital={country.capital} population={country.population} 
-                     languages={country.languages} flag={country.flag} />
+        <CountryCard name={country.name} 
+                     capital={country.capital} 
+                     population={country.population} 
+                     languages={country.languages} 
+                     flag={country.flag} />
       )
   }
   
@@ -32,11 +35,12 @@ const CountryContainer = ({ countries, selectedCountry, handleSelectedCountry })
   }  
 
   return (
-  <ul style={{padding: '0', listStyleType: 'none'}}>
-      {countries.map((country, index) => 
-          <li key={index} dataname={country.name} style={{marginBottom: '3px', marginRight: '10px'}}>{country.name} <button onClick={handleSelectedCountry}>show</button></li>)
-      }
-  </ul>
+      <ul style={{padding: '0', listStyleType: 'none'}}>
+          {countries.map((country, index) => 
+              <li key={index} dataname={country.name} style={{marginBottom: '3px'}}>{country.name}
+              <button onClick={handleSelectedCountry} style={{marginLeft: '5px'}}>show more</button></li>)
+          }
+      </ul>
   )
   
 }

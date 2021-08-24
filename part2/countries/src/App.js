@@ -9,12 +9,14 @@ const App = () => {
   const [ countries, setCountries] = useState({})
   const [ newSearch, setNewSearch ] = useState('')
   const [ selectedCountry, setSelectedCountry ] = useState({country: 'none'})
+  const [ isLoading, setLoading ] = useState(true)
 
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
-      .then(response => {
-        setCountries(response.data)
+      .then(res => {
+        setCountries(res.data)
+        setLoading(false)
       })
   }, [])
 
@@ -43,10 +45,17 @@ const App = () => {
 
   // RENDERING -----------------------------------------------------------------------------
 
+  if (isLoading) { return <div>Loading...</div> }
+  
   return (
     <>
-      <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange} />
-      <CountryContainer countries={countriesToShow} selectedCountry={selectedCountry} handleSelectedCountry={handleSelectedCountry} />
+      <Searchbar searchbarText={searchbarText} 
+                 searchbarInputValue={newSearch} 
+                searchbarInputOnchange={handleSearchChange} />
+      <CountryContainer countries={countriesToShow} 
+                        selectedCountry={selectedCountry} 
+                        handleSelectedCountry={handleSelectedCountry}
+                        setSelectedCountry={setSelectedCountry} />
     </>
   );
   
