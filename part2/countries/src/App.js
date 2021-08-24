@@ -36,17 +36,17 @@ const App = () => {
 
     let dataName = event.target.parentElement.getAttribute("dataname")
     let country = countries.find(country => country.name === dataName);
-    setSelectedCountry({country: country})
+    setSelectedCountry({...selectedCountry, country: country})
   }
 
   const resetSelectedCountry = () => {
-    setSelectedCountry({country: 'none'})
+    setSelectedCountry({...selectedCountry, country: 'none'})
   }
 
   // RENDERING -----------------------------------------------------------------------------
 
   if (isLoading) { return <div>Loading...</div> }
-  
+
   return (
     <>
       <Searchbar searchbarText={searchbarText} 
