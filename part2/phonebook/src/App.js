@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import numberService from './services/phoneNumbers'
 import Header from './components/Header'
 import Form from './components/Form'
 import Entries from './components/Entries'
@@ -17,11 +17,14 @@ const App = () => {
   const [ newSearch, setNewSearch ] = useState('')
   const [ showAll, setShowAll ] = useState(true)
   const [ people, setPeople ] = useState([]) 
+  const [ isLoading, setLoading ] = useState(true)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/people').then(response => {
-        setPeople(response.data)
+    numberService
+      .getAll()
+      .then(allNumbers => {
+        setPeople(allNumbers)
+        setLoading(false)
       })
   }, [])
 
@@ -73,25 +76,31 @@ const App = () => {
         number: newNumber
       }
      
-      setPeople(people.concat(newEntry));
-      setNewName('')
-      setNewNumber('')
-    }
+      numberService
+        .create(newEntry)
+        .then(returnedNumber => {
+          setPeople(people.concat(returnedNumber));
+          setNewName('')
+          setNewNumber('')
+        })
+      }
   }
 
-    return (
-      <>
-        <Header headerName={mainHeaderName}/>
-        <Header headerName={addNewEntryHeader}/>
-        <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange}/>
-        <Form onsubmit={onSubmitAddEntry} 
-              nameInputValue={newName} handleNameChange={handleNameChange} 
-              numberInputValue={newNumber} handleNumberChange={handleNumberChange}  
-              buttonType='submit' buttonText='add' />
-        <Header headerName={numbersHeader}/>
-        <Entries entriesToShow={entriesToShow}/>
-      </>
-    )
+  if (isLoading) { return (<div>Loading...</div>)}
+
+  return (
+    <>
+      <Header headerName={mainHeaderName}/>
+      <Header headerName={addNewEntryHeader}/>
+      <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange}/>
+      <Form onsubmit={onSubmitAddEntry} 
+            nameInputValue={newName} handleNameChange={handleNameChange} 
+            numberInputValue={newNumber} handleNumberChange={handleNumberChange}  
+            buttonType='submit' buttonText='add' />
+      <Header headerName={numbersHeader}/>
+      <Entries entriesToShow={entriesToShow}/>
+    </>
+  )
 
 }
 

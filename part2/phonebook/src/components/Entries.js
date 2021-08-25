@@ -1,7 +1,13 @@
 import React from 'react'
 import Entry from './Entry'
 
-const Entries = ({entriesToShow}) => {
+const Entries = ({ entriesToShow }) => {
+
+    if (entriesToShow.length === 0) {
+        return (
+            <p>No matching contacts.</p>
+        );
+    }
 
     /*
     const allPeople = people.map(person => 
