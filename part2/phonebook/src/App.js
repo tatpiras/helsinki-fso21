@@ -4,6 +4,8 @@ import Header from './components/Header'
 import Form from './components/Form'
 import Entries from './components/Entries'
 import Searchbar from './components/Searchbar'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
 
@@ -18,6 +20,7 @@ const App = () => {
   const [ showAll, setShowAll ] = useState(true)
   const [ people, setPeople ] = useState([]) 
   const [ isLoading, setLoading ] = useState(true)
+  const [ notification, setNotification ] = useState({ message: null, type: null })
 
   useEffect(() => {
     numberService
@@ -73,8 +76,22 @@ const App = () => {
         numberService
           .update(idToUpdate, updatedPerson)
           .then(updated => {
-            setPeople(people.map(person => person.id !== idToUpdate ? person : updated))
-        })
+            setPeople(people.map(person => person.id !== idToUpdate ? person : updated))})
+          .catch(error => {
+            setNotification({ message: `Could't update this number! It has probably been deleted.`, type: 'delete'})
+            setTimeout(() => {
+              setNotification({ message: null,  type: null })
+              window.location.reload()
+            }, 2000)
+          })
+
+        const updateNotification = { message: `${newName.toUpperCase()}'s number updated!`, type: 'update' }
+        setNotification(updateNotification)
+
+        setTimeout(() => {
+          setNotification({ message: null,  type: null })
+          window.location.reload()
+        }, 1500)
 
         return
 
@@ -101,9 +118,18 @@ const App = () => {
         .then(returnedNumber => {
           setPeople(people.concat(returnedNumber));
           setNewName('')
-          setNewNumber('')
+          setNewNumber('')})
+        .catch(error => {
+          console.log(error);
         })
-      }
+
+      const addNotification = { message: `${newEntry.name.toUpperCase()} added to phonebook!`, type: 'add' }
+      setNotification(addNotification)
+
+      setTimeout(() => {
+        setNotification({ message: null,  type: null })
+      }, 2500)
+    }
   } 
 
   const onClickDelete = (event) => {
@@ -119,6 +145,13 @@ const App = () => {
         .deleteOne(personId)
         .catch(error => console.log('Something went wrong DELETING item: ', error))
 
+      const deleteNotification = { message: `${personName.toUpperCase()} deleted from phonebook!`, type: 'delete' }
+      setNotification(deleteNotification)
+
+      setTimeout(() => {
+        setNotification({ message: null,  type: null })
+      }, 1500)
+
       setPeople(people.filter(person => person.id !== +personId))
     }
   }
@@ -128,7 +161,8 @@ const App = () => {
   if (isLoading) { return (<div>Loading...</div>)}
 
   return (
-    <>
+    <div className="app">
+      <Notification message={notification.message} type={notification.type}/>
       <Header headerName={mainHeaderName}/>
       <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange}/>
       <Header headerName={addNewEntryHeader}/>
@@ -138,10 +172,11 @@ const App = () => {
             numberInputValue={newNumber} 
             handleNumberChange={handleNumberChange}  
             buttonType='submit' 
-            buttonText='add' />
+            buttonText='add' 
+            buttonClassName='addButton'/>
       <Header headerName={numbersHeader}/>
-      <Entries entriesToShow={entriesToShow} onClickDelete={onClickDelete} />
-    </>
+      <Entries entriesToShow={entriesToShow} onClickDelete={onClickDelete} buttonClassName='deleteButton' />
+    </div>
   )
 
 }

@@ -8,12 +8,13 @@ const Form = ({ onsubmit,
                 numberInputValue, 
                 handleNumberChange, 
                 buttonType, 
-                buttonText }) => {
+                buttonText,
+                buttonClassName }) => {
     return (
         <form onSubmit={onsubmit}>
           <Input inputName='name' inputValue={nameInputValue} inputOnchange={handleNameChange}/>
           <Input inputName='number' inputValue={numberInputValue} inputOnchange={handleNumberChange}/>
-          <Button type={buttonType} buttonText={buttonText}/>
+          <Button type={buttonType} buttonText={buttonText} buttonClassName={buttonClassName}/>
       </form>
     )
 }

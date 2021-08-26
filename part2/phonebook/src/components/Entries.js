@@ -1,7 +1,7 @@
 import React from 'react'
 import Entry from './Entry'
 
-const Entries = ({ entriesToShow, onClickDelete }) => {
+const Entries = ({ entriesToShow, onClickDelete, buttonClassName }) => {
 
     if (entriesToShow.length === 0) {
         return (
@@ -27,7 +27,7 @@ const Entries = ({ entriesToShow, onClickDelete }) => {
         <div>
         <ul style={{listStyleType: 'none', padding: '0'}}>
             {entriesToShow.map(person => 
-                <Entry key={person.id} id={person.id} name={person.name} number={person.number} onClickDelete={onClickDelete}/>
+                <Entry key={person.id} id={person.id} name={person.name} number={person.number} onClickDelete={onClickDelete} buttonClassName={buttonClassName}/>
             )}
         </ul>
     </div>
