@@ -50,7 +50,7 @@ const App = () => {
 
   const alreadyExists = (newName) => {
     for (let person of people) {
-      if (nameIsEqual(person.name, newName)) {
+      if (nameIsEqual(person.name.trim(), newName.trim())) {
         return true;
       }   
     }
@@ -60,12 +60,32 @@ const App = () => {
 
     event.preventDefault()
 
-    if (alreadyExists(newName)) { 
-      alert(`${newName.toUpperCase()} is already added to phonebook`) 
-      return
+    if (alreadyExists(newName) && newNumber !== '') { 
+
+      const confirmUpdate = window.confirm(`${newName.toUpperCase().trim()} is already in phonebook. Replace number with new one?`)
+      if (confirmUpdate) {
+
+        const personToUpdate = people.find(person => person.name.toLowerCase() === newName.toLowerCase())
+        const idToUpdate = personToUpdate.id
+
+        const updatedPerson = { ...personToUpdate, number: newNumber }
+      
+        numberService
+          .update(idToUpdate, updatedPerson)
+          .then(updated => {
+            setPeople(people.map(person => person.id !== idToUpdate ? person : updated))
+        })
+
+        return
+
+      } else { 
+          setNewName('')
+          setNewNumber('')
+          return 
+        }
     }
-    if (newName === '' || newNumber === '') { 
-      alert(`Cannot add an incomplete entry. Please provide both a name and a number`) 
+    else if (newName === '' || newNumber === '') { 
+      alert(`Cannot add an incomplete entry. Please provide both a name and a number`)
       return
     }
     else {
@@ -84,25 +104,24 @@ const App = () => {
           setNewNumber('')
         })
       }
-  }
+  } 
 
   const onClickDelete = (event) => {
     
     const personName = event.target.parentElement.getAttribute("name");
 
-    const confirm = window.confirm(`Delete ${personName.toUpperCase()} from phonebook?`)
+    const confirmDelete = window.confirm(`Delete ${personName.toUpperCase()} from phonebook?`)
     
-    if (confirm) {
+    if (confirmDelete) {
 
       const personId = event.target.parentElement.getAttribute("id");
-      numberService.deleteOne(personId);
-      refresh()
+      numberService
+        .deleteOne(personId)
+        .catch(error => console.log('Something went wrong DELETING item: ', error))
+
+      setPeople(people.filter(person => person.id !== +personId))
     }
   }
-
-  const refresh = () => {
-    window.location.reload();
-  };
 
   // RENDERING -------------------------------------------------------------------
 
@@ -114,9 +133,12 @@ const App = () => {
       <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange}/>
       <Header headerName={addNewEntryHeader}/>
       <Form onsubmit={onSubmitAddEntry} 
-            nameInputValue={newName} handleNameChange={handleNameChange} 
-            numberInputValue={newNumber} handleNumberChange={handleNumberChange}  
-            buttonType='submit' buttonText='add' />
+            nameInputValue={newName} 
+            handleNameChange={handleNameChange} 
+            numberInputValue={newNumber} 
+            handleNumberChange={handleNumberChange}  
+            buttonType='submit' 
+            buttonText='add' />
       <Header headerName={numbersHeader}/>
       <Entries entriesToShow={entriesToShow} onClickDelete={onClickDelete} />
     </>

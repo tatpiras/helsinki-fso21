@@ -7,26 +7,31 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-const create = newObject => {
-    const request = axios.post(baseUrl, newObject)
+const getOne = (name) => {
+    const request = axios.get(baseUrl, { params: { name: name}})
+    return request.then(response => response.data)
+}
+
+const create = newPerson => {
+    const request = axios.post(baseUrl, newPerson)
     return request.then(response => response.data)
 }
 
 const deleteOne = (personId) => {
-    const request = axios.delete(`http://localhost:3001/people/${personId}`)
-    return request.then(response => console.log(response))
+    const request = axios.delete(`${baseUrl}/${personId}`)
+    return request.then(response => response.status)
 }   
 
-/*
-const update = (id, newObject) => {
-   const request = axios.put(`${baseUrl}/${id}`, newObject)
+const update = (personId, newPerson) => {
+   const request = axios.put(`${baseUrl}/${personId}`, newPerson)
    return request.then(response => response.data)
 }
-*/
 
 const numberService = {
     getAll,
+    getOne,
     create,
+    update,
     deleteOne
 };
 
