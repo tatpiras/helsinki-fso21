@@ -12,7 +12,7 @@ README.md
 
 # production
 /build
-/public
+**/public
 .env
 
 # misc
