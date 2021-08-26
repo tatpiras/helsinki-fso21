@@ -12,6 +12,11 @@ const create = newObject => {
     return request.then(response => response.data)
 }
 
+const deleteOne = (personId) => {
+    const request = axios.delete(`http://localhost:3001/people/${personId}`)
+    return request.then(response => console.log(response))
+}   
+
 /*
 const update = (id, newObject) => {
    const request = axios.put(`${baseUrl}/${id}`, newObject)
@@ -21,7 +26,8 @@ const update = (id, newObject) => {
 
 const numberService = {
     getAll,
-    create
+    create,
+    deleteOne
 };
 
 export default numberService;

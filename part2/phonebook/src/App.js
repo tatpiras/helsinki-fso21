@@ -86,19 +86,39 @@ const App = () => {
       }
   }
 
+  const onClickDelete = (event) => {
+    
+    const personName = event.target.parentElement.getAttribute("name");
+
+    const confirm = window.confirm(`Delete ${personName.toUpperCase()} from phonebook?`)
+    
+    if (confirm) {
+
+      const personId = event.target.parentElement.getAttribute("id");
+      numberService.deleteOne(personId);
+      refresh()
+    }
+  }
+
+  const refresh = () => {
+    window.location.reload();
+  };
+
+  // RENDERING -------------------------------------------------------------------
+
   if (isLoading) { return (<div>Loading...</div>)}
 
   return (
     <>
       <Header headerName={mainHeaderName}/>
-      <Header headerName={addNewEntryHeader}/>
       <Searchbar searchbarText={searchbarText} searchbarInputValue={newSearch} searchbarInputOnchange={handleSearchChange}/>
+      <Header headerName={addNewEntryHeader}/>
       <Form onsubmit={onSubmitAddEntry} 
             nameInputValue={newName} handleNameChange={handleNameChange} 
             numberInputValue={newNumber} handleNumberChange={handleNumberChange}  
             buttonType='submit' buttonText='add' />
       <Header headerName={numbersHeader}/>
-      <Entries entriesToShow={entriesToShow}/>
+      <Entries entriesToShow={entriesToShow} onClickDelete={onClickDelete} />
     </>
   )
 

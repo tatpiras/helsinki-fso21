@@ -1,44 +1,24 @@
 {
-  "people": [
-    {
-      "name": "Arto Hellas",
+  "people":[
+    { 
+      "name": "Arto Hellas", 
       "number": "040-123456",
       "id": 1
     },
-    {
-      "name": "Ada Lovelace",
+    { 
+      "name": "Ada Lovelace", 
       "number": "39-44-5323523",
       "id": 2
     },
-    {
-      "name": "Dan Abramov",
+    { 
+      "name": "Dan Abramov", 
       "number": "12-43-234345",
       "id": 3
     },
-    {
-      "name": "Mary Poppendieck",
+    { 
+      "name": "Mary Poppendieck", 
       "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "id": 5,
-      "name": "Tatiana",
-      "number": "02-666-1234"
-    },
-    {
-      "id": 6,
-      "name": "Claudio Re",
-      "number": "02-999-12578"
-    },
-    {
-      "id": 7,
-      "name": "Marika Pancotti",
-      "number": "06-98441"
-    },
-    {
-      "id": 8,
-      "name": "Giulio Sestini",
-      "number": "02-22345"
     }
   ]
 }
